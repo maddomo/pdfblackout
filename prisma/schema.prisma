@@ -3,11 +3,13 @@
 
 generator client {
     provider = "prisma-client-js"
+    previewFeatures = ["multiSchema", "typedSql"]
 }
 
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
+    schemas = ["public", "auth"]
 }
 
 model Post {
@@ -17,4 +19,5 @@ model Post {
     updatedAt DateTime @updatedAt
 
     @@index([name])
+    @@schema("public")
 }
