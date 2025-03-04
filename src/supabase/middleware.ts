@@ -28,15 +28,10 @@ export async function updateSession(request: NextRequest) {
 
   if (!signUpStatus.supabase) {
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
+    url.pathname = "/auth/signin";
     return NextResponse.redirect(url);
   }
-  if (!signUpStatus.own) {
-    // Not fully registered user: should complete his signup
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/signupComplete";
-    return NextResponse.redirect(url);
-  }
+
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
