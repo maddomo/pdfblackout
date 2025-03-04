@@ -6,9 +6,11 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
+import { type SupabaseClient } from "@supabase/supabase-js";
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { TRPCError } from "@trpc/server";
 
 import { db } from "~/server/db";
 
@@ -24,12 +26,17 @@ import { db } from "~/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (
+  opts: { headers: Headers },
+  supabaseFn: () => Promise<SupabaseClient>
+) => {
   return {
     db,
+    supabase: await supabaseFn(),
     ...opts,
   };
 };
+
 
 /**
  * 2. INITIALIZATION
@@ -96,6 +103,41 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
+const supabaseAuthMiddleware = t.middleware(async ({ next, path, ctx }) => {
+  const { error, data } = await ctx.supabase.auth.getUser();
+  if (!data.user)
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You are not authorized to access this resource.",
+    });
+  return next();
+});
+
+const ownAuthMiddleware = t.middleware(async ({ next, path, ctx }) => {
+  const { error, data } = await ctx.supabase.auth.getUser();
+  if (!data.user)
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You are not authorized to access this resource.",
+    });
+  const result = await ctx.db.user.count({
+    where: {
+      id: data.user.id,
+    },
+  });
+
+  if (result === 0) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You are not authorized to access this resource.",
+    });
+  }
+
+  return next();
+});
+
+
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -104,3 +146,11 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+export const protectedProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(ownAuthMiddleware);
+
+export const supabaseProtectedProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(supabaseAuthMiddleware);
