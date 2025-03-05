@@ -53,4 +53,20 @@ export const authRouter = createTRPCRouter({
                   own: (await ctx.db.user.count({ where: { id: user.id } })) > 0,
                 };
               }),
+
+            signIn: publicProcedure
+              .input(loginSchema)
+              .mutation(async ({ ctx, input }) => {
+                const { data, error } = await ctx.supabase.auth.signInWithPassword({
+                    email: input.email,
+                    password: input.password,
+                });
+                if(error){
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED",
+                        cause: error,
+                        message: error.code
+                    })
+                }
+              })
 });
