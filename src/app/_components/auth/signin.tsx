@@ -43,7 +43,7 @@ export function SignInForm(){
             onSuccess: () => {
                 setNote("Login erfolgreich, sie werden weitergeleitet ")
                 void revalidate().then(() => {
-                    void router.push("/dashboard");
+                    void router.push("/home");
                   });
             },
             onError: (e) => {
