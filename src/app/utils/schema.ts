@@ -20,3 +20,7 @@ export const signupCompleteSchema = z.object({
     firstName: z.string().regex(nameRegex),
     lastName: z.string().regex(nameRegex),
   });
+
+  export const pdfFormSchema = z.object({
+    file: z.custom<File>()
+  });
