@@ -1,6 +1,7 @@
 import { createClient } from "~/supabase/client";
-
+import { extractFromPDF } from "~/app/utils/findPersonalInformation";
 const supabase = createClient();
+
 
 export const uploadToStorage = async (file: File) => {
   
@@ -11,11 +12,14 @@ export const uploadToStorage = async (file: File) => {
       throw new Error("User is not authenticated.");
     }
 
-    
-    const folderpath = `${user.data.user?.id}/${file.name}`;
+    try{
+      
+      const redactedPDF = await extractFromPDF(file);
+
+      const folderpath = `${user.data.user?.id}/${file.name}`;
 
     // Datei in den Supabase Storage hochladen
-    const { error } = await supabase.storage.from("pdf").upload(folderpath, file, {
+    const { error } = await supabase.storage.from("pdf").upload(folderpath, redactedPDF, {
       upsert: true,
     });
 
@@ -37,6 +41,14 @@ export const uploadToStorage = async (file: File) => {
         signedUrl: signedUrlData.signedUrl,
         filename: file.name, 
       };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any){
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      throw new Error(`Fehler beim Hochladen: ${error.message}`)
+    }
+    
       
   
 };
+
+
