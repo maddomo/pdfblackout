@@ -15,6 +15,7 @@ export const uploadToStorage = async (file: File) => {
     try{
       
       const redactedPDF = await extractFromPDF(file);
+      console.log(redactedPDF);
 
       const folderpath = `${user.data.user?.id}/${file.name}`;
 
