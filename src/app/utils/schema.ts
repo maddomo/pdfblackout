@@ -22,5 +22,7 @@ export const signupCompleteSchema = z.object({
   });
 
   export const pdfFormSchema = z.object({
-    file: z.custom<File>()
+    file: z.custom<File>(),
+    whiteList: z.array(z.string()).optional(),
+
   });
