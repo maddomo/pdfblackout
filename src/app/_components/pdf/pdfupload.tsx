@@ -26,6 +26,10 @@ export default function PDFUploadForm() {
 
     const form = useZodForm<typeof pdfFormSchema>({
         schema: pdfFormSchema,
+        defaultValues: {
+            whiteList: [], 
+            file: undefined
+        }
     })
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,11 +53,20 @@ export default function PDFUploadForm() {
         
         upload.mutate({name: result.filename, path: result.signedUrl}, {
                 onSuccess: () => {
-                    setNote("Ihre PDF wurde hochgeladen und ist zur Verarbeitung bereit")
+                    setNote("Ihre PDF wurde geschwärzt!")
                     console.log(whiteList);
-                    form.reset();
-                    setFile(null);
+                    form.reset({
+                        whiteList: [],
+                        file: undefined,
+                    });
                     setWhiteList([]);
+                    setFile(null);
+
+                    const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
+                    if (fileInput) {
+                        fileInput.value = ""; 
+                    }
+
                 },
                 onError: (e) => {
                     setError(e.message);
