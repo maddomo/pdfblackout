@@ -12,14 +12,14 @@ export function initializePdfWorker() {
 }
 
 // Extrahiere Text und erstelle eine neue, redigierte PDF
-export async function extractFromPDF(file: File) {
+export async function extractFromPDF(file: File, whiteList: string[] = []) {
+    // Initialisiere den PDF-Worker
     initializePdfWorker();
 
     // Lese die Datei als ArrayBuffer
     const arrayBuffer = await file.arrayBuffer();
 
     // Lade die PDF mit pdf-lib und pdfjs-dist
-    const pdfDoc = await PDFDocument.load(arrayBuffer);
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
     // Erstelle eine neue PDF
@@ -58,7 +58,7 @@ export async function extractFromPDF(file: File) {
 
             let matches: { index: number; text: string }[] = [];
 
-            let whitelist: string[] = ["Frau Lisa Müller", "Mustermann"];
+            let whitelist: string[] = whiteList;
 
             // Funktion, um zu prüfen, ob der neue Match bereits enthalten ist
             function isDuplicateOrContained(newMatch: { index: number; text: string }) {
@@ -122,9 +122,6 @@ export async function extractFromPDF(file: File) {
 
                 currentX += matchWidth;
                 lastIndex = index + matchText.length;
-            });
-            matches.forEach((match, index) => {
-                console.log(`Match ${index + 1}:`, match);
             });
 
             const afterMatch = text.slice(lastIndex);

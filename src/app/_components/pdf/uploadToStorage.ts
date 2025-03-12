@@ -3,7 +3,7 @@ import { extractFromPDF } from "~/app/utils/findPersonalInformation";
 const supabase = createClient();
 
 
-export const uploadToStorage = async (file: File) => {
+export const uploadToStorage = async (file: File, whiteList: string[] = []) => {
   
 
     const user = await supabase.auth.getUser();
@@ -14,7 +14,7 @@ export const uploadToStorage = async (file: File) => {
 
     try{
       
-      const redactedPDF = await extractFromPDF(file);
+      const redactedPDF = await extractFromPDF(file, whiteList);
       console.log(redactedPDF);
 
       const folderpath = `${user.data.user?.id}/${file.name}`;
