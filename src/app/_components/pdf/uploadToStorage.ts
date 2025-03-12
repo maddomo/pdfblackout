@@ -31,7 +31,7 @@ export const uploadToStorage = async (file: File, whiteList: string[] = []) => {
     // Signierte URL generieren
     const { data: signedUrlData, error: signedUrlError } = await supabase.storage
       .from("pdf")
-      .createSignedUrl(folderpath, 3600);
+      .createSignedUrl(folderpath, 60);
 
     if (signedUrlError) {
       throw new Error("Fehler beim Generieren der Signed URL.");
