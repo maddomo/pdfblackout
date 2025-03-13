@@ -16,6 +16,7 @@ import { api } from "~/trpc/react";
 import { uploadToStorage } from "./uploadToStorage";
 import PDFDownload from "~/app/_components/pdf/pdfdownload";
 import { toast } from "sonner";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 export default function PDFUploadForm() {
 
@@ -86,44 +87,72 @@ export default function PDFUploadForm() {
     };
 
     return (
-        <div>
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField control={form.control} name="whiteList" render={({ field }) => (
+        <Card className="w-full max-w-md p-6 shadow-lg rounded-xl bg-white">
+        <CardHeader>
+            <CardTitle className="text-center text-lg font-semibold text-gray-800">
+            PDF Hochladen
+            </CardTitle>
+        </CardHeader>
+        <CardContent>
+            <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {/* Whitelist Eingabe */}
+                <FormField
+                control={form.control}
+                name="whiteList"
+                render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Whitelist</FormLabel>
-                        <FormControl>
+                    <FormLabel className="text-gray-600">Whitelist</FormLabel>
+                    <FormControl>
                         <Input
-                            type="text"
-                            value={whiteList.join(",")} // Stellt sicher, dass der Wert korrekt angezeigt wird
-                            onChange={(e) => {
-                                const value = e.target.value.trim();
-                                const newWhiteList = value ? value.split(",") : []; // Falls leer, leeres Array setzen
-                                setWhiteList(newWhiteList);
-                                field.onChange(newWhiteList);
-                            }}
-                            />
-                        </FormControl>
-                        <FormMessage />
+                        type="text"
+                        placeholder="Mustermann, Müller"
+                        value={whiteList.join(",")}
+                        onChange={(e) => {
+                            const value = e.target.value.trim();
+                            const newWhiteList = value ? value.split(",") : [];
+                            setWhiteList(newWhiteList);
+                            field.onChange(newWhiteList);
+                        }}
+                        />
+                    </FormControl>
+                    <FormMessage />
                     </FormItem>
                 )}
                 />
-                <FormField control={form.control} name="file" render={({ field }) => (
+
+                {/* PDF Upload */}
+                <FormField
+                control={form.control}
+                name="file"
+                render={({ field }) => (
                     <FormItem>
-                        <FormLabel>PDF</FormLabel>
-                        <FormControl>
-                            <Input type="file" accept="application/pdf" onChange={(e) => {handleFileChange(e); field.onChange(e.target.files?.[0]);}}>
-                            </Input>
-                        </FormControl>
-                        <FormMessage />
+                    <FormLabel className="text-gray-600">PDF Datei</FormLabel>
+                    <FormControl>
+                        <Input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => {
+                            handleFileChange(e);
+                            field.onChange(e.target.files?.[0]);
+                        }}
+                        />
+                    </FormControl>
+                    <FormMessage />
                     </FormItem>
                 )}
                 />
-                
-                <Button className="mt-2" type="submit" disabled={!file}>Pdf Hochladen</Button>
+
+                {/* Hochladen-Button */}
+                <Button className="w-full mt-4" type="submit" disabled={!file}>
+                PDF Hochladen
+                </Button>
             </form>
-        </Form>
-        <PDFDownload url={pdfLink} />
-        </div>
-    )
+            </Form>
+            <div className="mt-4">
+                <PDFDownload url={pdfLink}></PDFDownload>
+            </div>
+        </CardContent>
+    </Card>
+    );
 }

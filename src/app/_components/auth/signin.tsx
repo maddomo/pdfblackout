@@ -17,6 +17,7 @@ import { loginSchema } from "~/utils/schema";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { useRevalidation } from "~/utils/revalidation";
+import Link from "next/link";
 
 
 export function SignInForm(){
@@ -54,21 +55,21 @@ export function SignInForm(){
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 bg-white p-6 rounded-lg shadow-md max-w-md w-full mx-auto">
                 <FormField control={form.control} name="email" render={({ field }) => (
                     <FormItem>
-                        <FormLabel>E-Mail</FormLabel>
+                        <FormLabel className="text-gray-700 font-medium">E-Mail</FormLabel>
                         <FormControl>
-                            <Input placeholder="maxmustermann@web.de" {...field}></Input>
+                            <Input placeholder="maxmustermann@web.de" {...field} className="border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md"></Input>
                         </FormControl>
                     </FormItem>
                 )}
                 />
                 <FormField control={form.control} name="password" render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Passwort</FormLabel>
+                        <FormLabel className="text-gray-700 font-medium">Passwort</FormLabel>
                         <FormControl>
-                            <Input type="password" placeholder="•••••••••" {...field}></Input>
+                            <Input type="password" placeholder="•••••••••" {...field} className="border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md"></Input>
                         </FormControl>
                     </FormItem>
                 )}
@@ -77,7 +78,10 @@ export function SignInForm(){
                 <p>{error}</p>
                 <p>{note}</p>
 
-                <Button className="mt-2" type="submit">Sign in</Button>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-lg mt-2" type="submit">Login</Button>
+                <Link href="/auth/signup">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-lg mt-2" type="button">Noch kein Account?</Button>
+                </Link>
             </form>
 
 

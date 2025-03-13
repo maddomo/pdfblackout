@@ -68,5 +68,14 @@ export const authRouter = createTRPCRouter({
                         message: error.code
                     })
                 }
+              }),
+              getUserInfo2: publicProcedure.query(async ({ ctx }) => {
+                const authUser = (await ctx.supabase.auth.getUser()).data.user;
+                if (!authUser) {
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED"
+                    })
+                }
+                return authUser;
               })
 });
