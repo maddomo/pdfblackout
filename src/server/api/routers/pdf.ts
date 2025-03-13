@@ -1,6 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { getSupabaseUser } from "~/app/utils/trpchelper";
+import { getSupabaseUser } from "~/utils/trpchelper";
 import {  z } from "zod";
 
 export const pdfRouter = createTRPCRouter({
@@ -18,13 +18,17 @@ export const pdfRouter = createTRPCRouter({
                     
                 })
             }
+
+            const expiresAt = new Date();
+            expiresAt.setHours(expiresAt.getHours() + 1);
             
             
             await ctx.db.document.create({
                 data: {
                     userid: authUser.id,
                     filename: input.name,
-                    storagepath: input.path
+                    storagepath: input.path,
+                    expires_at: expiresAt,
                 }
             })
             
@@ -33,7 +37,6 @@ export const pdfRouter = createTRPCRouter({
             return {success: true};
 
 
-        })
-
+        }),
 
 })

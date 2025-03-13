@@ -8,10 +8,10 @@ import {
     FormLabel,
     FormMessage,
   } from "~/components/ui/form";
-import { useZodForm } from "~/app/utils/form";
+import { useZodForm } from "~/utils/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { pdfFormSchema } from "~/app/utils/schema";
+import { pdfFormSchema } from "~/utils/schema";
 import { api } from "~/trpc/react";
 import { uploadToStorage } from "./uploadToStorage";
 import PDFDownload from "~/app/_components/pdf/pdfdownload";
@@ -55,7 +55,7 @@ export default function PDFUploadForm() {
          const result = await uploadToStorage(file, whiteList);
          setPdfLink(result.signedUrl);
         
-        upload.mutate({name: result.filename, path: result.signedUrl}, {
+        upload.mutate({name: result.filename, path: result.folderpath}, {
                 onSuccess: () => {
                     toast.success("PDF wurde geschwärzt und ist zum Download bereit");
                     form.reset({

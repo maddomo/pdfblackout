@@ -3,7 +3,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { type FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { cookies } from "next/headers";
-import { getCookies, setCookie } from "~/app/utils/cookiehelper";
+import { getCookies, setCookie } from "~/utils/cookiehelper";
 
 /**
  * This function creates the supabase client for RSC.

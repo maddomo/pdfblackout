@@ -10,10 +10,10 @@ import {
     FormLabel,
     FormMessage,
   } from "~/components/ui/form";
-import { useZodForm } from "~/app/utils/form";
+import { useZodForm } from "~/utils/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { signupSchema, loginSchema } from "~/app/utils/schema";
+import { signupSchema, loginSchema } from "~/utils/schema";
 import { api } from "~/trpc/react";
 
 export function SignupForm(){
