@@ -1,5 +1,5 @@
 import { createClient } from "~/supabase/client";
-import { extractFromPDF } from "~/app/utils/findPersonalInformation";
+import { extractFromPDF } from "~/utils/findPersonalInformation";
 const supabase = createClient();
 
 
@@ -41,6 +41,7 @@ export const uploadToStorage = async (file: File, whiteList: string[] = []) => {
     return {
         signedUrl: signedUrlData.signedUrl,
         filename: file.name, 
+        folderpath: folderpath,
       };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any){

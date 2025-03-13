@@ -2,7 +2,7 @@ import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { type NextRequest } from "next/server";
 import SuperJSON from "superjson";
 import { type AppRouter } from "~/server/api/root";
-import { getBaseUrl } from "~/app/utils/baseurl";
+import { getBaseUrl } from "~/utils/baseurl";
 
 /**
  * This function only exists because NextJS Middleware is running in a special Vercel Runtime.

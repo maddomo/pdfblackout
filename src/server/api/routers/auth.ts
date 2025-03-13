@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { signupSchema, loginSchema } from "~/app/utils/schema";
+import { signupSchema, loginSchema } from "~/utils/schema";
 import { AuthError } from "@supabase/supabase-js";
 import { TRPCError } from "@trpc/server";
 import { zxcvbn } from "@zxcvbn-ts/core";
