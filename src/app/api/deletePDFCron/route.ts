@@ -1,10 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { db } from "~/server/db"; // Dein Prisma Client
+import { db } from "~/server/db";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // WICHTIG: Niemals im Frontend verwenden!
+  process.env.SUPABASE_SERVICE_ROLE_KEY! 
 );
 
 export async function GET(request: NextRequest) {
