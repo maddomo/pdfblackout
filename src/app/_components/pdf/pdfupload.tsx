@@ -20,8 +20,6 @@ import { toast } from "sonner";
 export default function PDFUploadForm() {
 
     const [file, setFile ] = useState<File | null>(null);
-    const [error, setError ] = useState("");
-    const [note, setNote ] = useState("");
     const [whiteList, setWhiteList] = useState<string[]>([]);
     const [pdfLink, setPdfLink] = useState<string>("");
     
@@ -46,11 +44,9 @@ export default function PDFUploadForm() {
 
     const onSubmit = async () => {
         if (!file) {
-            setError("Keine Datei ausgewählt!");
+            toast.error("Keine Datei ausgewählt!");
             return;
           }
-        setNote("");
-        setError("");
           
          const result = await uploadToStorage(file, whiteList);
          setPdfLink(result.signedUrl);
