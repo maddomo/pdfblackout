@@ -13,8 +13,9 @@ import {
 import { useZodForm } from "~/utils/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { signupSchema, loginSchema } from "~/utils/schema";
+import { signupSchema } from "~/utils/schema";
 import { api } from "~/trpc/react";
+import Link from "next/link";
 
 export function SignupForm(){
     const registration = api.auth.signup.useMutation();
@@ -59,63 +60,74 @@ export function SignupForm(){
     }
 
     return (
-        <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="text-lg">
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 bg-white p-6 rounded-lg shadow-md max-w-md w-full mx-auto">
+                {/* Vorname */}
                 <FormField control={form.control} name="firstName" render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Vorname</FormLabel>
+                        <FormLabel className="text-gray-700 font-medium">Vorname</FormLabel>
                         <FormControl>
-                            <Input placeholder="Max" {...field}/>
+                            <Input placeholder="Max" {...field} className="border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md" />
                         </FormControl>
-                        <FormMessage />                                  
+                        <FormMessage />
                     </FormItem>
-                )}
-                />
+                )} />
+
+                {/* Nachname */}
                 <FormField control={form.control} name="lastName" render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Nachname</FormLabel>
+                        <FormLabel className="text-gray-700 font-medium">Nachname</FormLabel>
                         <FormControl>
-                            <Input placeholder="Mustermann" {...field}/>
+                            <Input placeholder="Mustermann" {...field} className="border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md" />
                         </FormControl>
-                        <FormMessage />                                  
+                        <FormMessage />
                     </FormItem>
-                )}
-                />
+                )} />
+
+                {/* Email */}
                 <FormField control={form.control} name="email" render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel className="text-gray-700 font-medium">E-Mail</FormLabel>
                         <FormControl>
-                            <Input placeholder="Maxmustermann@web.de" {...field}/>
+                            <Input placeholder="max.mustermann@web.de" {...field} className="border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md" />
                         </FormControl>
-                        <FormMessage />                                  
+                        <FormMessage />
                     </FormItem>
-                )}
-                />
+                )} />
+
+                {/* Passwort */}
                 <FormField control={form.control} name="password" render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Passwort</FormLabel>
+                        <FormLabel className="text-gray-700 font-medium">Passwort</FormLabel>
                         <FormControl>
-                            <Input type="password" placeholder="••••••••••" {...field} onChange={(e) => {handlePasswordChange(e.target.value); field.onChange(e)}}/>
+                            <Input type="password" placeholder="••••••••••" {...field} onChange={(e) => {handlePasswordChange(e.target.value); field.onChange(e)}} className="border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md" />
                         </FormControl>
-                        <FormMessage />                                  
+                        <FormMessage />
                     </FormItem>
-                )}
-                />
+                )} />
+
+                {/* Passwort bestätigen */}
                 <FormItem>
-                        <FormLabel>Passwort Bestätigen</FormLabel>
-                        <FormControl>
-                            <Input type="password" placeholder="••••••••••" onChange={(e) => {setConfirmPassword(e.target.value)}}/>
-                        </FormControl>
-                        <FormMessage />                                  
+                    <FormLabel className="text-gray-700 font-medium">Passwort bestätigen</FormLabel>
+                    <FormControl>
+                        <Input type="password" placeholder="••••••••••" onChange={(e) => {setConfirmPassword(e.target.value)}} className="border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md" />
+                    </FormControl>
+                    <FormMessage />
                 </FormItem>
 
-                <p>{error}</p>
-                <p>{note}</p>
+                {/* Fehler- und Hinweisnachrichten */}
+                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                {note && <p className="text-gray-500 text-sm text-center">{note}</p>}
 
-                <Button className="mt-2"type="submit">Sign up</Button>
-                
-
+                {/* Registrieren-Button */}
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-lg mt-2">
+                    Sign up
+                </Button>
+                <Link href="/auth/signin">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-lg mt-2" type="button">Zum Login</Button>
+                </Link>
             </form>
         </Form>
+
     )
 }
