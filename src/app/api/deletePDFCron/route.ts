@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { db } from "~/server/db"; // Dein Prisma Client
 import { createClient } from "@supabase/supabase-js";
 
