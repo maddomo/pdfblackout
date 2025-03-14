@@ -18,7 +18,8 @@
         "wait": "Please wait 3 seconds between uploads",
         "success": "PDF has been redacted and is ready for download",
         "error": "Error uploading file",
-        "file": "PDF File"
+        "file": "PDF File",
+        "whitelist": "Whitelist (won't be redacted)"
 
     },
 

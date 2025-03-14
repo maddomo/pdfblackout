@@ -19,7 +19,7 @@ import { extractFromPDF } from "~/utils/findPersonalInformation";
 import createDownloadURL from "~/utils/createDownloadURL";
 import { useTranslations } from 'next-intl';
 
-const MTBU = 30000;
+const MTBU = 3000;
 
 export default function PDFUploadForm() {
 
@@ -108,7 +108,7 @@ export default function PDFUploadForm() {
                 name="whiteList"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel className="text-gray-600">Whitelist</FormLabel>
+                    <FormLabel className="text-gray-600"> {t("whitelist")} </FormLabel>
                     <FormControl>
                         <Input
                         type="text"

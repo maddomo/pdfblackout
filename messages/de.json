@@ -18,7 +18,8 @@
         "wait": "Bitte warten Sie 3 Sekunden zwischen den Uploads",
         "success": "PDF wurde geschwärzt und ist zum Download bereit",
         "error": "Fehler beim Hochladen der Datei",
-        "file": "PDF Datei"
+        "file": "PDF Datei",
+        "whitelist": "Whitelist (wird nicht geschwärzt)"
 
     },
 
