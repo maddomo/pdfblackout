@@ -40,16 +40,22 @@ export default function PDFDownload({ url }: { url: string }) {
       const response = await fetch(validUrl);
       if (!response.ok) throw new Error("Fehler beim Abrufen der Datei.");
 
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
+     
 
       const a = document.createElement("a");
-      a.href = blobUrl;
+      a.href = url;
       a.download = "dokument.pdf";
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
+
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      },5000);
+
+      setValidUrl("");
+      setIsExpired(true);
+      setTimeLeft(0);
+    
     } catch (error) {
       console.error("Fehler beim Herunterladen der PDF:", error);
     }

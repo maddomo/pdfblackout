@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import {
     Form,
     FormControl,
@@ -12,11 +12,13 @@ import { useZodForm } from "~/utils/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { pdfFormSchema } from "~/utils/schema";
-import { api } from "~/trpc/react";
-import { uploadToStorage } from "./uploadToStorage";
 import PDFDownload from "~/app/_components/pdf/pdfdownload";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { extractFromPDF } from "~/utils/findPersonalInformation";
+import createDownloadURL from "~/utils/createDownloadURL";
+
+const MTBU = 30000;
 
 export default function PDFUploadForm() {
 
@@ -24,7 +26,9 @@ export default function PDFUploadForm() {
     const [whiteList, setWhiteList] = useState<string[]>([]);
     const [pdfLink, setPdfLink] = useState<string>("");
     
-    const upload = api.pdf.pdfUpload.useMutation();
+    const lastUpload= useRef(0);
+
+
 
     const form = useZodForm<typeof pdfFormSchema>({
         schema: pdfFormSchema,
@@ -47,43 +51,43 @@ export default function PDFUploadForm() {
         if (!file) {
             toast.error("Keine Datei ausgewählt!");
             return;
-          }
-          
-         const result = await uploadToStorage(file, whiteList);
-         setPdfLink(result.signedUrl);
-        
-        upload.mutate({name: result.filename, path: result.folderpath}, {
-                onSuccess: () => {
-                    toast.success("PDF wurde geschwärzt und ist zum Download bereit");
-                    form.reset({
-                        whiteList: [],
-                        file: undefined,
-                    });
-                    setWhiteList([]);
-                    setFile(null);
+        }
+        const now = Date.now();
+        if(now - lastUpload.current < MTBU){
+            toast.error("Bitte warten Sie 3 Sekunden zwischen den Uploads");
+            return;
+        }
+        lastUpload.current = now;
+        try {
+            const redactedFile = await extractFromPDF(file, whiteList);
+            const url = await createDownloadURL(redactedFile);
+            setPdfLink(url);
+            toast.success("PDF wurde geschwärzt und ist zum Download bereit");
+            form.reset({
+                whiteList: [],
+                file: undefined,
+            });
+            setWhiteList([]);
+            setFile(null);
 
-                    const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
-                    if (fileInput) {
-                        fileInput.value = ""; 
-                    }
-
-                },
-                onError: () => {
-                    toast.error("Fehler beim Hochladen der PDF");
-                    form.reset({
-                        whiteList: [],
-                        file: undefined,
-                    });
-                    setWhiteList([]);
-                    setFile(null);
-
-                    const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
-                    if (fileInput) {
-                        fileInput.value = ""; 
-                    }
-                }
+            const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
+            if (fileInput) {
+                fileInput.value = ""; 
             }
-        );
+        } catch (error) {
+            toast.error("Fehler beim Hochladen der PDF");
+            form.reset({
+                whiteList: [],
+                file: undefined,
+            });
+            setWhiteList([]);
+            setFile(null);
+
+            const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
+            if (fileInput) {
+                fileInput.value = ""; 
+            }
+        }
     };
 
     return (
