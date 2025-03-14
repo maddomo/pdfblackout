@@ -1,0 +1,104 @@
+{
+    "HomePage": {
+      "title": "Blcak out your PDFs - ",
+      "title2": "safe & fast",
+      "subtitle": "Black out personal data in your PDFs. All this without AI and super fast.",
+      "boxtitle1": "Automatic text recognition",
+      "boxbody1": "Find sensitive content in seconds - directly in the browser.",
+      "boxtitle2": "Maximum privacy",
+      "boxbody2": "Your files never leave your device.",
+      "boxtitle3": "Completely free",
+      "boxbody3": "Use the tool without restrictions and without registration."
+    },
+
+    "PDFUpload": {
+        "title": "PDF Upload",
+        "upload": "upload",
+        "noFile": "No file selected",
+        "wait": "Please wait 3 seconds between uploads",
+        "success": "PDF has been redacted and is ready for download",
+        "error": "Error uploading file",
+        "file": "PDF File"
+
+    },
+
+    "PDFDownload": {
+        "error": "The download link is expired. Please upload the file again.",
+        "error2": "Error while fetching the file",
+        "error3": "Error while downloading the file",
+        "expire1": "The link is",
+        "expire2": "seconds valid",
+        "show": "Show PDF",
+        "download": "Download PDF"
+    },
+
+    "Footer": {
+        "imprint": "imprint",
+        "privacy": "privacy"
+    },
+
+    "PrivacyPolicy": {
+        "privacyPolicy": "📜 Privacy Policy",
+        "responsibleTitle": "1. Responsible Party",
+        "responsibleDesc": "The entity responsible for data processing on this website is:",
+        "name": "Moritz Foglia",
+        "address": "Leihgesterner Weg 36, 35392 Gießen, Germany",
+        "email": "Email: {email}",
+      
+        "generalProcessingTitle": "2. General Information on Data Processing",
+        "generalProcessingDesc": "This web app does not store or process any personal data on servers. All uploaded PDFs are processed locally in the browser and are not sent to external servers.",
+      
+        "fileProcessingTitle": "3. Processing of Files (PDFs)",
+        "fileProcessingDesc": [
+          "Uploaded PDFs are only processed in the browser.",
+          "No storage occurs on our servers.",
+          "After processing, the file can be downloaded and is not stored further."
+        ],
+      
+        "legalBasisTitle": "4. Legal Basis under GDPR",
+        "legalBasisDesc": "Since no personal data is stored, the GDPR is only partially applicable. If you contact us by email, your data will be processed in accordance with Art. 6 para. 1 lit. f GDPR (legitimate interest in responding to inquiries).",
+      
+        "cookiesTrackingTitle": "5. Use of Cookies and Tracking",
+        "cookiesTrackingDesc": "This web app:",
+        "cookiesTrackingList": [
+          "✅ This web app uses only one functional cookie (NEXT_LOCALE) to store the user's preferred language. This cookie does not contain any personal data and automatically expires after 24 hours.",
+          "✅ Does not use tracking or analytics tools (e.g., Google Analytics)",
+          "✅ Does not store IP addresses or other user data"
+        ],
+      
+        "userRightsTitle": "6. Your Rights under GDPR",
+        "userRightsDesc": "As a user, you have the following rights:",
+        "userRightsList": [
+          "📩 Right to access (Art. 15 GDPR) – What data is stored? (None)",
+          "❌ Right to deletion (Art. 17 GDPR) – Not necessary since no data is stored.",
+          "🚫 Right to object (Art. 21 GDPR) – Not required as no tracking or storage occurs."
+        ],
+        "contactUs": "If you have any questions, contact us at {email}.",
+      
+        "changesTitle": "7. Changes to this Privacy Policy",
+        "changesDesc": "This privacy policy may be updated at any time. The current version is always available at /privacy.",
+      
+        "lastUpdated": "Last updated: {date}"
+      },
+
+      
+        "imprint": {
+          "title": "🏛️ Imprint",
+          "metaDescription": "Imprint according to §5 TMG for the web app",
+          "section1Title": "1. Information according to § 5 TMG",
+          "name": "Moritz Foglia",
+          "address": "Leihgesterner Weg 36, 35392 Gießen, Germany",
+          "section2Title": "2. Contact",
+          "email": "Email: {email}",
+          "section3Title": "3. Responsible for content according to § 55 Abs. 2 RStV",
+          "section4Title": "4. Disclaimer",
+          "section4Desc": "Despite careful content control, we assume no liability for the content of external links. The operators of the linked pages are solely responsible for their content.",
+          "section5Title": "5. EU Dispute Resolution",
+          "section5Desc": "The European Commission provides a platform for online dispute resolution (OS):",
+          "lastUpdated": "Last updated: {date}"
+        }
+      
+      
+      
+
+  }

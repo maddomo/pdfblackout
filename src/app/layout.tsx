@@ -3,7 +3,9 @@ import { Toaster } from "~/components/ui/sonner";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import Footer from "./_components/footer";
-
+import {NextIntlClientProvider} from 'next-intl';
+import {getLocale} from 'next-intl/server';
+import LanguageSwitcher from "./_components/cookieSwitcher";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -11,15 +13,20 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+
+  const locale = await getLocale();
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang={locale} className={`${GeistSans.variable}`}>
       <body>
-        {children}
-        <Footer />
-        <Toaster />
+        <NextIntlClientProvider>
+          <LanguageSwitcher />
+          {children}
+          <Footer />
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

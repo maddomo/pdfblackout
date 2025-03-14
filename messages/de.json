@@ -1,0 +1,102 @@
+{
+    "HomePage": {
+      "title": "Schwärze deine PDFs - ",
+      "title2": "sicher & schnell",
+      "subtitle": "Schwärze personenbezogene Daten in deinen PDFs. Das alles ohne KI und super schnell.",
+      "boxtitle1": "Automatische Texterkennung",
+      "boxbody1": "Finde sensible Inhalte in Sekunden – direkt im Browser.",
+      "boxtitle2": "Maximale Privatsphäre",
+      "boxbody2": "Deine Dateien verlassen niemals dein Gerät.",
+      "boxtitle3": "Komplett kostenlos",
+      "boxbody3": "Nutze das Tool ohne Einschränkungen und ohne Anmeldung."
+    },
+
+    "PDFUpload": {
+        "title": "PDF Hochladen",
+        "upload": "Hochladen",
+        "noFile": "Keine Datei ausgewählt",
+        "wait": "Bitte warten Sie 3 Sekunden zwischen den Uploads",
+        "success": "PDF wurde geschwärzt und ist zum Download bereit",
+        "error": "Fehler beim Hochladen der Datei",
+        "file": "PDF Datei"
+
+    },
+
+    "PDFDownload": {
+        "error": "Der Download-Link ist abgelaufen. Bitte laden Sie die Datei erneut hoch.",
+        "error2": "Fehler beim Abrufen der Datei",
+        "error3": "Fehler beim Herunterladen der Datei",
+        "expire1": "Der Link ist",
+        "expire2": "Sekunden gültig",
+        "show": "PDF anzeigen",
+        "download": "PDF Herunterladen"
+    },
+    "Footer": {
+        "imprint": "Impressum",
+        "privacy": "Datenschutz"
+    },
+
+    "PrivacyPolicy": {
+        "privacyPolicy": "📜 Datenschutzerklärung",
+        "responsibleTitle": "1. Verantwortlicher",
+        "responsibleDesc": "Verantwortlich für die Datenverarbeitung auf dieser Website ist:",
+        "name": "Moritz Foglia",
+        "address": "Leihgesterner Weg 36, 35392 Gießen, Deutschland",
+        "email": "E-Mail: {email}",
+        
+        "generalProcessingTitle": "2. Allgemeine Hinweise zur Datenverarbeitung",
+        "generalProcessingDesc": "Diese Web-App speichert oder verarbeitet keine personenbezogenen Daten auf Servern. Alle hochgeladenen PDFs werden lokal im Browser verarbeitet und nicht an externe Server gesendet.",
+      
+        "fileProcessingTitle": "3. Verarbeitung von Dateien (PDFs)",
+        "fileProcessingDesc": [
+          "Die hochgeladenen PDFs werden nur im Browser bearbeitet.",
+          "Es erfolgt keine Speicherung auf unseren Servern.",
+          "Nach der Verarbeitung kann die Datei heruntergeladen werden, danach wird sie nicht weiter gespeichert."
+        ],
+      
+        "legalBasisTitle": "4. Rechtsgrundlage gemäß DSGVO",
+        "legalBasisDesc": "Da keine personenbezogenen Daten gespeichert werden, ist die DSGVO nur begrenzt anwendbar. Falls du uns per E-Mail kontaktierst, erfolgt die Verarbeitung deiner Daten gemäß Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse zur Beantwortung von Anfragen).",
+      
+        "cookiesTrackingTitle": "5. Verwendung von Cookies und Tracking",
+        "cookiesTrackingDesc": "Diese Web-App:",
+        "cookiesTrackingList": [
+          "✅ Diese Web-App verwendet nur einen funktionalen Cookie (NEXT_LOCALE), um die bevorzugte Sprache des Nutzers zu speichern. Dieser Cookie enthält keine personenbezogenen Daten und läuft nach 24 Stunden automatisch ab.",
+          "✅ Setzt kein Tracking oder Analyse-Tools (z. B. Google Analytics) ein",
+          "✅ Speichert keine IP-Adressen oder andere Nutzerdaten"
+        ],
+      
+        "userRightsTitle": "6. Deine Rechte gemäß DSGVO",
+        "userRightsDesc": "Als Nutzer hast du folgende Rechte:",
+        "userRightsList": [
+          "📩 Auskunftsrecht (Art. 15 DSGVO) – Welche Daten werden gespeichert? (Keine)",
+          "❌ Recht auf Löschung (Art. 17 DSGVO) – Da keine Daten gespeichert werden, ist dies nicht notwendig.",
+          "🚫 Widerspruchsrecht (Art. 21 DSGVO) – Nicht erforderlich, da kein Tracking oder Speicherung erfolgt."
+        ],
+        "contactUs": "Falls du Fragen hast, kontaktiere uns unter {email}.",
+      
+        "changesTitle": "7. Änderungen dieser Datenschutzerklärung",
+        "changesDesc": "Diese Datenschutzerklärung kann jederzeit aktualisiert werden. Die aktuelle Version ist immer unter /privacy verfügbar.",
+      
+        "lastUpdated": "Letzte Aktualisierung: {date}"
+      },
+
+      
+        "imprint": {
+          "title": "🏛️ Impressum",
+          "metaDescription": "Impressum gemäß §5 TMG für die Web-App",
+          "section1Title": "1. Angaben gemäß § 5 TMG",
+          "name": "Moritz Foglia",
+          "address": "Leihgesterner Weg 36, 35392 Gießen, Deutschland",
+          "section2Title": "2. Kontakt",
+          "email": "E-Mail: {email}",
+          "section3Title": "3. Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
+          "section4Title": "4. Haftungsausschluss",
+          "section4Desc": "Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.",
+          "section5Title": "5. EU-Streitschlichtung",
+          "section5Desc": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:",
+          "lastUpdated": "Letzte Aktualisierung: {date}"
+        }
+      
+      
+      
+  }

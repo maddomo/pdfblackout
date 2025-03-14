@@ -17,11 +17,13 @@ import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { extractFromPDF } from "~/utils/findPersonalInformation";
 import createDownloadURL from "~/utils/createDownloadURL";
+import { useTranslations } from 'next-intl';
 
 const MTBU = 30000;
 
 export default function PDFUploadForm() {
 
+    const t = useTranslations("PDFUpload");
     const [file, setFile ] = useState<File | null>(null);
     const [whiteList, setWhiteList] = useState<string[]>([]);
     const [pdfLink, setPdfLink] = useState<string>("");
@@ -41,7 +43,7 @@ export default function PDFUploadForm() {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0] ?? null;
         if (selectedFile) {
-            console.log("Datei ausgewählt:", selectedFile);
+            
             setFile(selectedFile);  // Stellt sicher, dass die Datei richtig gesetzt ist
         }
     };
@@ -49,12 +51,12 @@ export default function PDFUploadForm() {
 
     const onSubmit = async () => {
         if (!file) {
-            toast.error("Keine Datei ausgewählt!");
+            toast.error(t("noFile"));
             return;
         }
         const now = Date.now();
         if(now - lastUpload.current < MTBU){
-            toast.error("Bitte warten Sie 3 Sekunden zwischen den Uploads");
+            toast.error(t("wait"));
             return;
         }
         lastUpload.current = now;
@@ -62,7 +64,7 @@ export default function PDFUploadForm() {
             const redactedFile = await extractFromPDF(file, whiteList);
             const url = await createDownloadURL(redactedFile);
             setPdfLink(url);
-            toast.success("PDF wurde geschwärzt und ist zum Download bereit");
+            toast.success(t("success"));
             form.reset({
                 whiteList: [],
                 file: undefined,
@@ -75,7 +77,7 @@ export default function PDFUploadForm() {
                 fileInput.value = ""; 
             }
         } catch (error) {
-            toast.error("Fehler beim Hochladen der PDF");
+            toast.error(t("error"));
             form.reset({
                 whiteList: [],
                 file: undefined,
@@ -94,7 +96,7 @@ export default function PDFUploadForm() {
         <Card className="w-full max-w-md p-6 shadow-lg rounded-xl bg-white">
         <CardHeader>
             <CardTitle className="text-center text-lg font-semibold text-gray-800">
-            PDF Hochladen
+             {t("title")}
             </CardTitle>
         </CardHeader>
         <CardContent>
@@ -131,7 +133,7 @@ export default function PDFUploadForm() {
                 name="file"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel className="text-gray-600">PDF Datei</FormLabel>
+                    <FormLabel className="text-gray-600">{t("file")}</FormLabel>
                     <FormControl>
                         <Input
                         type="file"
@@ -149,7 +151,7 @@ export default function PDFUploadForm() {
 
                 {/* Hochladen-Button */}
                 <Button className="w-full mt-4" type="submit" disabled={!file}>
-                PDF Hochladen
+                {t("upload")}
                 </Button>
             </form>
             </Form>

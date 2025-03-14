@@ -4,11 +4,13 @@ import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { Label } from "~/components/ui/label";
 import { toast } from "sonner";
+import { useTranslations } from 'next-intl';
 
 export default function PDFDownload({ url }: { url: string }) {
   const [validUrl, setValidUrl] = useState(url);
   const [isExpired, setIsExpired] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
+  const t = useTranslations("PDFDownload");
 
   useEffect(() => {
     if (url) {
@@ -33,12 +35,12 @@ export default function PDFDownload({ url }: { url: string }) {
 
   const handleDownload = async () => {
     if (!validUrl || isExpired) {
-      toast.error("Der Download-Link ist abgelaufen. Bitte laden Sie die Datei erneut hoch.");
+      toast.error(t("error"));
       return;
     }
     try {
       const response = await fetch(validUrl);
-      if (!response.ok) throw new Error("Fehler beim Abrufen der Datei.");
+      if (!response.ok) throw new Error(t("error2")); 
 
      
 
@@ -57,7 +59,7 @@ export default function PDFDownload({ url }: { url: string }) {
       setTimeLeft(0);
     
     } catch (error) {
-      console.error("Fehler beim Herunterladen der PDF:", error);
+      console.error(t("error3"), error);
     }
   };
 
@@ -65,15 +67,15 @@ export default function PDFDownload({ url }: { url: string }) {
     <>
       {url && (
         <div className="mt-5 flex flex-col justify-center items-center">
-          <Label htmlFor="download">Dieser Link ist {timeLeft} Sekunden gültig</Label>
+          <Label htmlFor="download">{t("expire1")} {timeLeft} {t("expire2")}</Label>
           <div id="download" className="mt-2 flex flex-row justify-center items-center gap-2">
             <Button disabled={isExpired}>
               <Link href={url} target="_blank" rel="noopener noreferrer">
-                PDF Anzeigen
+                {t("show")}
               </Link>
             </Button>
             <Button onClick={handleDownload} disabled={isExpired}>
-              PDF Herunterladen
+              {t("download")}
             </Button>
           </div>
         </div>
