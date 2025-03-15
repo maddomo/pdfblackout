@@ -34,6 +34,7 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
 
         const newPage = newPdfDoc.addPage([pageWidth, pageHeight]);
 
+
         textContent.items.forEach((item: any) => {
             const text = item.str;
             const position = item.transform;
@@ -42,7 +43,6 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
             const width = item.width;
             const height = item.height;
             const charWidth = width / text.length;
-
             const doc = nlp(text);
             const detectedNames = doc.people().out('array') || [];
 
@@ -51,17 +51,20 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
                 phone: /\b(\+?\s?(\d{1,3})[-.\s]?)?(?:\(?\d{2,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{4,}\b/g,
                 birthdate: /\b(?:0[1-9]|[12][0-9]|3[01])[-/.](?:0[1-9]|1[0-2])[-/.](\d{4})\b/g,
                 address: /\b[A-Za-zÄÖÜäöüß]+\s*(?:straße|gasse|weg|platz|allee|ring|hof|chaussee|damm|ufer|steig|stieg|graben|markt|park|promenade|brücke|hang|zeile|hügel|bogen|pfad|reihe|land|kamp|horst|kai|winkel)\s+\d{1,5},?\s*\d{5}\s+[A-Za-zÄÖÜäöüß-]+\b/g,
+                strasseMitNummer: /\b[A-ZÄÖÜa-zäöüß]+(?:straße|str\.?|weg|allee|platz|gasse|ring|damm|ufer|chaussee|steig|berg|hang|pfad|bogen|graben|hafen|markt|hof|brücke)\s\d+[a-zA-Z]?\b/gi,
                 iban: /\bDE\d{2}\s*(?:[0-9a-zA-Z]{4}\s*){4}[0-9a-zA-Z]{2}\b/g,
                 bic: /\b[A-Z]{4}DE[A-Z0-9]{2}(?:[A-Z0-9]{3})?\b/g,
-                titleAndName: /\b(Herr|Frau)\s+([A-ZÄÖÜ][a-zäöüß]+)\b/g
+                titleAndName: /\b(Herr|Frau)\s+([A-ZÄÖÜ][a-zäöüß]+)\b/g,
+                plzStadt: /\b\d{5}\s+[A-ZÄÖÜ][a-zäöüß]+\b/g,
+                stadtPlz: /\b[A-ZÄÖÜ][a-zäöüß]+\s+\d{5}\b/g,
             };
 
             let matches: { index: number; text: string }[] = [];
-
             let whitelist: string[] = whiteList;
 
             // Funktion, um zu prüfen, ob der neue Match bereits enthalten ist
             function isDuplicateOrContained(newMatch: { index: number; text: string }) {
+                
                 return matches.some(existingMatch => 
                     existingMatch.text.includes(newMatch.text) || newMatch.text.includes(existingMatch.text)
                 );
@@ -77,6 +80,7 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
                 let index = text.indexOf(name);
                 if (index !== -1) {
                     let newMatch = { index, text: name };
+                    console.log("Name", newMatch);
                     if (!isDuplicateOrContained(newMatch) && !isWhitelisted(name)) {
                         matches.push(newMatch);
                     }
@@ -88,7 +92,7 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
                     const matchText = match[0];
 
                     let newMatch = { index: match.index!, text: matchText };
-
+                    console.log(matchText);
                     if (!isDuplicateOrContained(newMatch) && !isWhitelisted(matchText)) {
                         matches.push(newMatch);
                     }
