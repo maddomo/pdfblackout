@@ -34,6 +34,11 @@ export async function generateMetadata(): Promise<Metadata> {
       locale,
     },
     robots: "index, follow",
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
   };
 }
 
