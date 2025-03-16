@@ -13,13 +13,24 @@
 
     "PDFUpload": {
         "title": "PDF Hochladen",
-        "upload": "Hochladen",
+        "upload": "Schwärzen",
         "noFile": "Keine Datei ausgewählt",
         "wait": "Bitte warten Sie 3 Sekunden zwischen den Uploads",
         "success": "PDF wurde geschwärzt und ist zum Download bereit",
         "error": "Fehler beim Hochladen der Datei",
         "file": "PDF Datei",
-        "whitelist": "Whitelist (wird nicht geschwärzt)"
+        "whitelist": "Whitelist",
+        "email": "Email",
+        "name": "Name",
+        "phone": "Handynummer",
+        "birthdate": "Datum",
+        "address": "Adresse",
+        "iban": "IBAN/BIC",
+        "whiteListDescription": "Namen oder Adressen ein, die nicht geschwärzt werden sollen",
+        "blacklist": "Blacklist",
+        "blacklistDescription": "Wörter, die zusätzlich geschwärzt werden sollen",
+        "optionen": "Optionen",
+        "optionenDescription": "Wähle mindestens eine Option aus, die geschwärzt werden soll"
 
     },
 

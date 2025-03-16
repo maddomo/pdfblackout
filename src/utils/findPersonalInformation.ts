@@ -12,7 +12,7 @@ export function initializePdfWorker() {
 }
 
 // Extrahiere Text und erstelle eine neue, redigierte PDF
-export async function extractFromPDF(file: File, whiteList: string[] = []) {
+export async function extractFromPDF(file: File, whiteList: string[] = [], blackList: string[] = [], checkedItems: Record<string, boolean> ) {
     // Initialisiere den PDF-Worker
     initializePdfWorker();
 
@@ -24,6 +24,44 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
 
     // Erstelle eine neue PDF
     const newPdfDoc = await PDFDocument.create();
+
+    let shouldNameBeRedacted: boolean = false;
+    const regexPatterns: Record<string, RegExp> = {}
+    //Regexauswahl setzen
+    for(const key in checkedItems){
+        if(checkedItems[key]){
+            switch(key){
+                case "name":
+                    regexPatterns["name"] = /\b(Herr|Frau)\s+([A-ZÄÖÜ][a-zäöüß]+)\b/g;
+                    shouldNameBeRedacted = true;
+                    break;
+                case "email":
+                    regexPatterns["email"] = /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}\b/g;
+                    break;
+                case "birthdate":
+                    regexPatterns["birthdate"] = /\b(Herr|Frau)\s+([A-ZÄÖÜ][a-zäöüß]+)\b/g;
+                    break;
+                case "adresse":
+                    regexPatterns["adresse"] = /\b(Herr|Frau)\s+([A-ZÄÖÜ][a-zäöüß]+)\b/g;
+                    regexPatterns["strasseMitNummer"] = /\b[A-ZÄÖÜa-zäöüß]+(?:straße|str\.?|weg|allee|platz|gasse|ring|damm|ufer|chaussee|steig|berg|hang|pfad|bogen|graben|hafen|markt|hof|brücke)\s\d+[a-zA-Z]?\b/gi;
+                    regexPatterns["plzStadt"] = /\b\d{5}\s+[A-ZÄÖÜ][a-zäöüß]+\b/g;
+                    regexPatterns["stadtPLz"] = /\b[A-ZÄÖÜ][a-zäöüß]+\s+\d{5}\b/g;
+                    break;
+                case "iban":
+                    regexPatterns["iban"] = /\b(Herr|Frau)\s+([A-ZÄÖÜ][a-zäöüß]+)\b/g;
+                    regexPatterns["bic"] = /\b[A-Z]{4}DE[A-Z0-9]{2}(?:[A-Z0-9]{3})?\b/g;
+                    break;
+                case "phone":
+                    regexPatterns["phone"] = /\b(\+?\s?(\d{1,3})[-.\s]?)?(?:\(?\d{2,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{4,}\b/g;
+                default:
+                    break;
+
+            }
+
+        }
+    }
+
+    console.log(regexPatterns);
 
     // Gehe jede Seite im Dokument durch
     for (let i = 0; i < pdf.numPages; i++) {
@@ -46,21 +84,10 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
             const doc = nlp(text);
             const detectedNames = doc.people().out('array') || [];
 
-            const regexPatterns = {
-                email: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}\b/g,
-                phone: /\b(\+?\s?(\d{1,3})[-.\s]?)?(?:\(?\d{2,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{4,}\b/g,
-                birthdate: /\b(?:0[1-9]|[12][0-9]|3[01])[-/.](?:0[1-9]|1[0-2])[-/.](\d{4})\b/g,
-                address: /\b[A-Za-zÄÖÜäöüß]+\s*(?:straße|gasse|weg|platz|allee|ring|hof|chaussee|damm|ufer|steig|stieg|graben|markt|park|promenade|brücke|hang|zeile|hügel|bogen|pfad|reihe|land|kamp|horst|kai|winkel)\s+\d{1,5},?\s*\d{5}\s+[A-Za-zÄÖÜäöüß-]+\b/g,
-                strasseMitNummer: /\b[A-ZÄÖÜa-zäöüß]+(?:straße|str\.?|weg|allee|platz|gasse|ring|damm|ufer|chaussee|steig|berg|hang|pfad|bogen|graben|hafen|markt|hof|brücke)\s\d+[a-zA-Z]?\b/gi,
-                iban: /\bDE\d{2}\s*(?:[0-9a-zA-Z]{4}\s*){4}[0-9a-zA-Z]{2}\b/g,
-                bic: /\b[A-Z]{4}DE[A-Z0-9]{2}(?:[A-Z0-9]{3})?\b/g,
-                titleAndName: /\b(Herr|Frau)\s+([A-ZÄÖÜ][a-zäöüß]+)\b/g,
-                plzStadt: /\b\d{5}\s+[A-ZÄÖÜ][a-zäöüß]+\b/g,
-                stadtPlz: /\b[A-ZÄÖÜ][a-zäöüß]+\s+\d{5}\b/g,
-            };
 
             let matches: { index: number; text: string }[] = [];
             let whitelist: string[] = whiteList;
+            let blacklist: string[] = blackList;
 
             // Funktion, um zu prüfen, ob der neue Match bereits enthalten ist
             function isDuplicateOrContained(newMatch: { index: number; text: string }) {
@@ -75,29 +102,49 @@ export async function extractFromPDF(file: File, whiteList: string[] = []) {
                 return whitelist.some(allowed => allowed.toLowerCase().includes(text.toLowerCase()) || text.toLowerCase().includes(allowed.toLowerCase()));
             }
             
-
-            detectedNames.forEach((name: string) => {
-                let index = text.indexOf(name);
-                if (index !== -1) {
-                    let newMatch = { index, text: name };
-                    console.log("Name", newMatch);
-                    if (!isDuplicateOrContained(newMatch) && !isWhitelisted(name)) {
-                        matches.push(newMatch);
+            if(shouldNameBeRedacted){
+                detectedNames.forEach((name: string) => {
+                    let index = text.indexOf(name);
+                    if (index !== -1) {
+                        let newMatch = { index, text: name };
+                        console.log("Name", newMatch);
+                        if (!isDuplicateOrContained(newMatch) && !isWhitelisted(name)) {
+                            matches.push(newMatch);
+                        }
                     }
-                }
-            });
+                });
+            }
 
             Object.values(regexPatterns).forEach((regex) => {
                 [...text.matchAll(regex)].forEach((match) => {
-                    const matchText = match[0];
-
-                    let newMatch = { index: match.index!, text: matchText };
-                    console.log(matchText);
-                    if (!isDuplicateOrContained(newMatch) && !isWhitelisted(matchText)) {
-                        matches.push(newMatch);
+                    if (match.index !== undefined) {
+                        const matchText = match[0];
+            
+                        let newMatch = { index: match.index, text: matchText };
+                        console.log("Erkanntes Muster:", newMatch);
+            
+                        if (!isDuplicateOrContained(newMatch) && !isWhitelisted(matchText)) {
+                            matches.push(newMatch);
+                        }
                     }
                 });
             });
+
+            // Prüfe zusätzlich, ob Wörter aus der Blacklist geschwärzt werden müssen
+            blacklist.forEach((blacklistWord) => {
+                let regex = new RegExp(`\\b${blacklistWord}\\b`, "gi");
+                [...text.matchAll(regex)].forEach((match) => {
+                    if (match.index !== undefined) {
+                        let newMatch = { index: match.index, text: match[0] };
+                        console.log("Blacklisted Word erkannt:", newMatch);
+
+                        if (!isDuplicateOrContained(newMatch)) {
+                            matches.push(newMatch);
+                        }
+                    }
+                });
+            });
+
 
             matches.sort((a, b) => a.index - b.index);
 
