@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "PDF Blackout - Securely Redact Personal Data",
     description: "Easily blackout sensitive data in PDFs without uploading them to a server. 100% privacy-focused PDF redaction tool.",
-    keywords: "PDF blackout, redact PDF, remove personal data, PDF privacy, secure PDF tool",
+    keywords: "PDF blackout, redact PDF, remove personal data, PDF privacy, secure PDF tool, PDF, PDF schwärzen, PDF sicher, PDF Blackout, PDF email",
     authors: [{ name: "Moritz Foglia", url: siteUrl }],
     metadataBase: new URL(siteUrl),
     openGraph: {
