@@ -24,5 +24,9 @@ export const signupCompleteSchema = z.object({
   export const pdfFormSchema = z.object({
     file: z.custom<File>(),
     whiteList: z.array(z.string()).optional(),
+    blackList: z.array(z.string()).optional(),
+    items: z.array(z.string()).min(1, {
+      message: "You have to select at least one item.",
+  }),
 
   });
