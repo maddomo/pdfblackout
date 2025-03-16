@@ -13,13 +13,24 @@
 
     "PDFUpload": {
         "title": "PDF Upload",
-        "upload": "upload",
+        "upload": "Blacken",
         "noFile": "No file selected",
         "wait": "Please wait 3 seconds between uploads",
         "success": "PDF has been redacted and is ready for download",
         "error": "Error uploading file",
         "file": "PDF File",
-        "whitelist": "Whitelist (won't be redacted)"
+        "whitelist": "Whitelist",
+        "email": "email",
+        "name": "name",
+        "phone": "phone",
+        "birthdate": "date",
+        "address": "address",
+        "iban": "IBAN/BIC",
+        "whiteListDescription": "Names or addresses that wont be blackened",
+        "blacklist": "Blacklist",
+        "blacklistDescription": "Words that are additionally blackened",
+        "optionen": "Options",
+        "optionenDescription": "Choose at least one option, which will be blackened"
 
     },
 

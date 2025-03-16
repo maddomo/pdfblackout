@@ -46,27 +46,27 @@ export default function PDFUploadForm() {
     const checkboxItems = [
         {
             id: "name",
-            label: "Name",
+            label: t("name"),
         },
         {
             id: "email",
-            label: "Email",
+            label: t("email"),
         },
         {
             id: "phone",
-            label: "Handynummer",
+            label: t("phone"),
         },
         {
             id: "birthdate",
-            label: "Geburtstag",
+            label: t("birthdate"),
         },
         {
             id: "adresse",
-            label: "Adresse",
+            label: t("address"),
         },
         {
             id: "iban",
-            label: "Iban/BIC",
+            label: t("iban"),
         },
     ] as const;
 
@@ -138,140 +138,137 @@ export default function PDFUploadForm() {
     };
 
     return (
-        <Card className="w-full max-w-md p-6 shadow-lg rounded-xl bg-white">
-        <CardHeader>
-            <CardTitle className="text-center text-lg font-semibold text-gray-800">
-             {t("title")}
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                {/* Whitelist Eingabe */}
-                <FormField
-                control={form.control}
-                name="whiteList"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel className="text-base"> {t("whitelist")} </FormLabel>
-                    <FormDescription>Tragen Sie Namen oder Adressen ein die nicht geschwärzt werden sollen (optional)</FormDescription>
-                    <FormControl>
-                        <Input
-                        type="text"
-                        placeholder="Mustermann, Müller"
-                        value={whiteList.join(",")}
-                        onChange={(e) => {
-                            const value = e.target.value.trim();
-                            const newWhiteList = value ? value.split(",") : [];
-                            setWhiteList(newWhiteList);
-                            field.onChange(newWhiteList);
-                        }}
-                        />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                {/* BlackList Eingabe */}
-                <FormField
-                control={form.control}
-                name="blackList"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel className="text-base"> Blacklist </FormLabel>
-                    <FormDescription>Tragen sie Worte ein, die extra geschwärzt werden sollen.</FormDescription>
-                    <FormControl>
-                        <Input
-                        type="text"
-                        placeholder="Mustermann, Müller"
-                        value={blackList.join(",")}
-                        onChange={(e) => {
-                            const value = e.target.value.trim();
-                            const newBlackList = value ? value.split(",") : [];
-                            setBlackList(newBlackList);
-                            field.onChange(newBlackList);
-                        }}
-                        />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-
-                <FormField
-                        control={form.control}
-                        name="items"
-                        render={() => (
-                            <FormItem>
-                            <div className="mb-4">
-                                <FormLabel className="text-base">Optionen</FormLabel>
-                                <FormDescription>
-                                Wähle mindestens eine Option aus, die geschwärzt werden soll.
-                                </FormDescription>
-                            </div>
-                            {checkboxItems.map((item) => (
-                                <FormField
-                                key={item.id}
-                                name="items"
-                                render={({ }) => {
-                                    return (
-                                    <FormItem
-                                        key={item.id}
-                                        className="flex flex-row items-start space-x-3 space-y-0"
-                                    >
+        <Card className="w-full max-w-3xl p-8 shadow-lg rounded-xl bg-white mb-5">
+            <CardHeader>
+                <CardTitle className="text-center text-xl font-semibold text-gray-800">
+                    {t("title")}
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        {/* Whitelist & Blacklist als Grid auf Desktop, Stack auf Mobile */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormField
+                                control={form.control}
+                                name="whiteList"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-base">{t("whitelist")}</FormLabel>
+                                        <FormDescription className="min-h-[40px]">{t("whiteListDescription")}</FormDescription>
                                         <FormControl>
-                                        <Checkbox
-                                            checked={checkedItems[item.id]}
-                                            onCheckedChange={(checked) => {
-                                                handleCheckboxChange(item.id, checked as boolean)
-                                            }}
-                                        />
+                                            <Input
+                                                type="text"
+                                                placeholder="Mustermann, Müller"
+                                                value={whiteList.join(",")}
+                                                onChange={(e) => {
+                                                    const value = e.target.value.trim();
+                                                    const newWhiteList = value ? value.split(",") : [];
+                                                    setWhiteList(newWhiteList);
+                                                    field.onChange(newWhiteList);
+                                                }}
+                                            />
                                         </FormControl>
-                                        <FormLabel className="text-sm font-normal">
-                                        {item.label}
-                                        </FormLabel>
+                                        <FormMessage />
                                     </FormItem>
-                                    )
-                                }}
-                                />
-                            ))}
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                {/* PDF Upload */}
-                <FormField
-                control={form.control}
-                name="file"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel className="text-gray-600">{t("file")}</FormLabel>
-                    <FormControl>
-                        <Input
-                        type="file"
-                        accept="application/pdf"
-                        onChange={(e) => {
-                            handleFileChange(e);
-                            field.onChange(e.target.files?.[0]);
-                        }}
+                                )}
+                            />
+    
+                            <FormField
+                                control={form.control}
+                                name="blackList"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-base"> {t("blacklist")} </FormLabel>
+                                        <FormDescription className="min-h-[40px]"> {t("blacklistDescription")} </FormDescription>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                placeholder="Beispielwort, Test"
+                                                value={blackList.join(",")}
+                                                onChange={(e) => {
+                                                    const value = e.target.value.trim();
+                                                    const newBlackList = value ? value.split(",") : [];
+                                                    setBlackList(newBlackList);
+                                                    field.onChange(newBlackList);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+    
+                        {/* Checkboxen in zwei Spalten auf Desktop, eine Spalte auf Mobile */}
+                        <FormField
+                            control={form.control}
+                            name="items"
+                            render={() => (
+                                <FormItem>
+                                    <FormLabel className="text-base"> {t("optionen")} </FormLabel>
+                                    <FormDescription>
+                                        {t("optionenDescription")}
+                                    </FormDescription>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {checkboxItems.map((item) => (
+                                            <FormField
+                                                key={item.id}
+                                                name="items"
+                                                render={() => (
+                                                    <FormItem className="flex items-center space-x-3">
+                                                        <FormControl>
+                                                            <Checkbox
+                                                                checked={checkedItems[item.id]}
+                                                                onCheckedChange={(checked) => handleCheckboxChange(item.id, checked as boolean)}
+                                                            />
+                                                        </FormControl>
+                                                        <FormLabel className="text-sm font-normal">{item.label}</FormLabel>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        ))}
+                                    </div>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-
-                {/* Hochladen-Button */}
-                <Button className="w-full mt-4" type="submit" disabled={!file}>
-                {t("upload")}
-                </Button>
-            </form>
-            </Form>
-            <div className="mt-4">
-                <PDFDownload url={pdfLink}></PDFDownload>
-            </div>
-        </CardContent>
-    </Card>
+    
+                        {/* Datei-Upload & Button in einer Zeile auf Desktop, untereinander auf Mobile */}
+                        <div className="flex flex-col md:flex-row items-center md:justify-between gap-4">
+                            <FormField
+                                control={form.control}
+                                name="file"
+                                render={({ field }) => (
+                                    <FormItem className="w-full md:flex-1">
+                                        <FormLabel className="text-gray-600">{t("file")}</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="file"
+                                                accept="application/pdf"
+                                                onChange={(e) => {
+                                                    handleFileChange(e);
+                                                    field.onChange(e.target.files?.[0]);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+    
+                            <Button className=" w-full md:w-auto mt-4 md:mt-7" type="submit" disabled={!file}>
+                                {t("upload")}
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+    
+                {/* PDF Download */}
+                <div className="mt-6">
+                    <PDFDownload url={pdfLink} />
+                </div>
+            </CardContent>
+        </Card>
     );
 }
