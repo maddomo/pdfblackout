@@ -76,7 +76,9 @@ export default function PDFUploadForm() {
         schema: pdfFormSchema,
         defaultValues: {
             whiteList: [], 
-            file: undefined
+            file: undefined,
+            blackList: [],
+            items: ["email"]
         }
     })
 
@@ -84,6 +86,9 @@ export default function PDFUploadForm() {
         const selectedItems = Object.keys(checkedItems).filter((key) => checkedItems[key]);
         form.setValue("items", selectedItems); // Nur wenn `checkedItems` sich geändert hat
     }, [checkedItems, form]);
+
+
+    
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0] ?? null;
@@ -113,9 +118,13 @@ export default function PDFUploadForm() {
             form.reset({
                 whiteList: [],
                 file: undefined,
+                items: [],
+                blackList: [],
             });
             setWhiteList([]);
+            setBlackList([]);
             setFile(null);
+            setCheckedItems({})
 
             const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
             if (fileInput) {
@@ -126,16 +135,23 @@ export default function PDFUploadForm() {
             form.reset({
                 whiteList: [],
                 file: undefined,
+                items: [],
+                blackList: [],
             });
             setWhiteList([]);
+            setBlackList([]);
             setFile(null);
+            setCheckedItems({})
 
             const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
             if (fileInput) {
                 fileInput.value = ""; 
             }
         }
+       
     };
+
+
 
     return (
         <Card className="w-full max-w-3xl p-8 shadow-lg rounded-xl bg-white mb-5">
