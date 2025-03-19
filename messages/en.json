@@ -30,7 +30,9 @@
         "blacklist": "Blacklist",
         "blacklistDescription": "Words that are additionally blackened",
         "optionen": "Options",
-        "optionenDescription": "Choose at least one option, which will be blackened"
+        "optionenDescription": "Choose options, which will be blackened",
+        "dropFile": "Drop File",
+        "dragDropOrClick": "Drag and Drop or Click"
 
     },
 

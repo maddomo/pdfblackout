@@ -30,7 +30,9 @@
         "blacklist": "Blacklist",
         "blacklistDescription": "Wörter, die zusätzlich geschwärzt werden sollen",
         "optionen": "Optionen",
-        "optionenDescription": "Wähle mindestens eine Option aus, die geschwärzt werden soll"
+        "optionenDescription": "Wähle Optionen aus, die geschwärzt werden soll",
+        "dropFile": "Drop File",
+        "dragDropOrClick": "Drag and Drop oder Klicke"
 
     },
 

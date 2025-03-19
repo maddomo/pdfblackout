@@ -20,6 +20,7 @@ import { extractFromPDF } from "~/utils/findPersonalInformation";
 import createDownloadURL from "~/utils/createDownloadURL";
 import { useTranslations } from 'next-intl';
 import { Checkbox } from "~/components/ui/checkbox";
+import { useDropzone } from "react-dropzone";
 
 const MTBU = 3000;
 
@@ -118,13 +119,12 @@ export default function PDFUploadForm() {
             form.reset({
                 whiteList: [],
                 file: undefined,
-                items: [],
                 blackList: [],
             });
             setWhiteList([]);
             setBlackList([]);
             setFile(null);
-            setCheckedItems({})
+
 
             const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
             if (fileInput) {
@@ -132,16 +132,16 @@ export default function PDFUploadForm() {
             }
         } catch (error) {
             toast.error(t("error"));
+            console.log(error)
             form.reset({
                 whiteList: [],
                 file: undefined,
-                items: [],
                 blackList: [],
             });
             setWhiteList([]);
             setBlackList([]);
             setFile(null);
-            setCheckedItems({})
+
 
             const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
             if (fileInput) {
@@ -150,6 +150,23 @@ export default function PDFUploadForm() {
         }
        
     };
+
+    const onDrop = (acceptedFiles: File[]) => {
+        if (acceptedFiles.length > 0) {
+            const selectedFile = acceptedFiles[0];
+            if(!selectedFile){
+                return;
+            }
+            setFile(selectedFile);
+            form.setValue("file", selectedFile);
+        }
+    };
+    
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accept: { "application/pdf": [".pdf"] },
+        multiple: false,
+    });
 
 
 
@@ -256,20 +273,16 @@ export default function PDFUploadForm() {
                                 control={form.control}
                                 name="file"
                                 render={({ field }) => (
-                                    <FormItem className="w-full md:flex-1">
-                                        <FormLabel className="text-gray-600">{t("file")}</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="file"
-                                                accept="application/pdf"
-                                                onChange={(e) => {
-                                                    handleFileChange(e);
-                                                    field.onChange(e.target.files?.[0]);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
+                                    <div {...getRootProps()} className="w-full p-6 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-gray-500 transition-all">
+                                        <input {...getInputProps()} />
+                                        {file ? (
+                                            <p className="text-gray-700">{file.name}</p>
+                                        ) : (
+                                            <p className="text-gray-500">
+                                                {isDragActive ? t("dropFile") : t("dragDropOrClick")}
+                                            </p>
+                                        )}
+                                    </div>
                                 )}
                             />
     
